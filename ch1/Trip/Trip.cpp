@@ -11,8 +11,10 @@ int main()
     int remainings; /* remainings after dividing all cents into all the students */
     int money; /* all cents spent by current student */
     int dollars, cents; /*dollars and cents of current student */
-    int diff_a, diff_b; 
+    int more, less; /* difference between money spent and the average. 
+    more holds the difference from the people who payed more than avg; less for those who payed less. */
     int res;
+    int is_rounded;
     std::vector<int> v;
 
     while(scanf("%d", &num_students) != EOF){
@@ -31,40 +33,30 @@ int main()
             total += money;
         }
 
-        remainings = total % num_students;
-        avg_floor = (total/num_students) + ((remainings)/num_students);
-        avg_ceil = (total/num_students) + ((remainings + (num_students-1))/num_students);
+        avg_floor = total/num_students;
+        is_rounded = (total % num_students) != 0;
 
-        diff_a = 0;
-        diff_b = 0;
+        more = 0;
+        less = 0;
 
         for(int i=0; i<num_students; i++){
-            if(v[i] <= avg_floor){
-                diff_a += avg_floor - v[i];
+            if(is_rounded && v[i] >= avg_floor+1){
+                more += v[i] - (avg_floor + 1);
+            }else if(!is_rounded && v[i] > avg_floor){
+                more += v[i] - avg_floor;
             }else{
-                diff_b += v[i] - avg_ceil;
+                less += avg_floor - v[i];
             }    
         }
         
-        
-        res = diff_a > diff_b ? diff_a : diff_b;
-        std::cout << "$" << res/100 <<"." << get_cents(res%100) << "\n";
+        res = more > less ? more : less;
+        std::cout << "$" << res/100 <<".";
+        if (res%100 < 10){
+            std::cout << '0';
+        }
+        std::cout << res%100 << std::endl;
    
     }
 
     return 0;
-}
-
-/* to convert two or one digits into a string. 
-If it is a one digit number, append a '0' in the beginning.  (i.e 1 = "01", 32 = "32") */
-
-std::string get_cents(int num){
-    int i = 1;
-    std::string str {"00"};
-    while(i >= 0 && num){
-        str[i] = '0' + num%10;
-        num /= 10;
-        i--;
-    }
-    return str;
 }
