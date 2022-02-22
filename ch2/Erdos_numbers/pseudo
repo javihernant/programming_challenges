@@ -1,0 +1,23 @@
+lv=0
+while (true){
+	entries = {0, ..., n_entries}
+	num_entries_left = entries.size
+	create look_in
+	for each entry:
+		skip_idx = -1
+		for each name in the entry:
+			if lvl[name] == lv:
+				skip_idx = idx de name
+				break
+		if skip_idx == -1
+			look_in.push(idx of this entry)
+		else
+			for each name in the entry:
+				if name idx != skip_idx
+					assign name <- lv+1
+	if look_in.size == 0 || look_in.size == num_entries left:
+		break
+	else
+		entries = look_in	
+	lv++;	
+}
